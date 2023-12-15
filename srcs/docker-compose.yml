@@ -4,3 +4,21 @@ services:
     build: ./requirements/nginx
     ports:
       - 8080:443
+    depends_on:
+      - wordpress
+    volumes:
+      - wordpress:/var/www/html
+
+  wordpress:
+    image: wordpress:fpm
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+    volumes:
+      - wordpress:/var/www/html
+
+volumes:
+  wordpress:
