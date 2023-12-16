@@ -6,19 +6,44 @@ services:
       - 8080:443
     depends_on:
       - wordpress
+    networks:
+      - frontend
     volumes:
-      - wordpress:/var/www/html
+      - wordpress_s:/var/www/html
 
   wordpress:
-    image: wordpress:fpm
+    image: wordpress:6.4.2-php8.1-fpm
+    depends_on:
+      - db
     restart: always
+    volumes:
+      - wordpress_s:/var/www/html
+    networks:
+      - frontend
+      - backend
     environment:
       WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: exampleuser
-      WORDPRESS_DB_PASSWORD: examplepass
-      WORDPRESS_DB_NAME: exampledb
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_TABLE_PREFIX: wp_
+  db:
+    image: mariadb:10.5.8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
     volumes:
-      - wordpress:/var/www/html
+      - db_d:/var/lib/mysql
+    networks:
+      - backend
 
 volumes:
-  wordpress:
+  wordpress_s:
+  db_d:
+
+networks:
+  frontend:
+  backend:
