@@ -28,7 +28,7 @@ services:
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_TABLE_PREFIX: wp_
   db:
-    image: mariadb:10.5.8
+    build: ./requirements/mariadb
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root

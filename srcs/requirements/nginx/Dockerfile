@@ -1,6 +1,6 @@
 FROM alpine:3.19
 
-RUN apk --update add --no-cache --virtual builddeps nginx openssl && rm -rf /var/lib/apt/lists/*
+RUN apk --update add --no-cache --virtual builddeps nginx openssl && rm -f /var/cache/apk/*
 
 
 COPY conf/nginx.conf /etc/nginx/nginx.conf
