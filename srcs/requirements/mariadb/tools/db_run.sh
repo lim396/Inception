@@ -4,7 +4,6 @@
         chown -R mysql:mysql /var/lib/mysql
     else
         chown -R mysql:mysql /var/lib/mysql
-#        mysqld --initialize --user=mysql --ldata=/var/lib/mysql > /dev/null
         mysql_install_db --user=mysql --ldata=/var/lib/mysql > /dev/null
     fi
 
@@ -25,13 +24,8 @@ FLUSH PRIVILEGES;
 GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD';
 GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
 EOF
-#CREATE DATABASE IF NO EXISTS ${MYSQL_DATABASE} CHARSET utf8mb4 COLLATE utf8mb4_general_ci;
-
-#ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
-#FLUSH PRIVILEGES;
 
     /usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < $tmp_orders_file
     rm -rf $tmp_orders_file
 
-#exec "$@"
 exec /usr/bin/mysqld --user=mysql --skip-name-resolve --skip-networking=0

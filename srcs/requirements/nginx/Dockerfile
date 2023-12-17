@@ -10,4 +10,4 @@ RUN mkdir -p etc/ssl/ && mkdir -p /usr/local/bin && chmod 755 /usr/local/bin/ent
 
 #EXPOSE 443
 
-ENTRYPOINT ["sh", "/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
