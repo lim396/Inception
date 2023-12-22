@@ -12,7 +12,8 @@ services:
       - wordpress_s:/var/www/html
 
   wordpress:
-    image: wordpress:6.4.2-php8.1-fpm
+    #image: wordpress:6.4.2-php8.1-fpm
+    build: ./requirements/wordpress
     depends_on:
       - db
     restart: always
@@ -27,6 +28,12 @@ services:
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_TABLE_PREFIX: wp_
+      WORDPRESS_ADMIN_NAME: root
+      WORDPRESS_ADMIN_PASS: root-pass
+      WORDPRESS_ADMIN_EMAIL: root@example.com
+      WORDPRESS_USER_NAME: test
+      WORDPRESS_USER_EMAIL: test@example.com
+      WORDPRESS_USER_PASS: test-pass
   db:
     build: ./requirements/mariadb
     restart: always
