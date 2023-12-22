@@ -20,10 +20,16 @@ RUN apk --update add --no-cache --virtual builddeps curl \
         php82-sodium \
         php82-xmlreader \
         php82-zlib \
+        php82-iconv \
         && rm -f /var/cache/apk/*
 
-RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-RUN chmod +x wp-cli.phar
-RUN mv wp-cli.phar /usr/local/bin/wp
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
 
-CMD ["php-fpm82", "-F"]
+COPY ./tools/run_wp.sh /usr/local/bin
+COPY ./conf/www.conf /etc/php82/php-fpm.d/www.conf
+RUN chmod 755 /usr/local/bin/run_wp.sh
+
+WORKDIR /var/www/html
+EXPOSE 9000
+
+ENTRYPOINT ["/usr/local/bin/run_wp.sh"]
