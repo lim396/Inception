@@ -4,10 +4,10 @@ services:
     build: ./requirements/nginx
     image: nginx
     container_name: nginx
-    ports:
-      - 443:443
     depends_on:
       - wordpress
+    ports:
+      - 443:443
     networks:
       - frontend
     volumes:
@@ -58,7 +58,15 @@ services:
 
 volumes:
   wordpress_s:
+    driver_opts:
+        type: none
+        device: /home/${LOGIN}/data/wordpress
+        o: bind
   db_d:
+    driver_opts:
+        type: none
+        device: /home/${LOGIN}/data/db
+        o: bind
 
 networks:
   frontend:
