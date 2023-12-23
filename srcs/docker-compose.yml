@@ -2,6 +2,8 @@ version: "3.9"
 services:
   nginx:
     build: ./requirements/nginx
+    image: nginx
+    container_name: nginx
     ports:
       - 443:443
     depends_on:
@@ -10,11 +12,15 @@ services:
       - frontend
     volumes:
       - wordpress_s:/var/www/html
+    environment:
+      SERVER_NAME: ${DOMAIN_NAME}
 
   wordpress:
     build: ./requirements/wordpress
+    image: wordpress
+    container_name: wordpress
     depends_on:
-      - db
+      - mariadb
     restart: always
     volumes:
       - wordpress_s:/var/www/html
@@ -22,25 +28,29 @@ services:
       - frontend
       - backend
     environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress
-      WORDPRESS_TABLE_PREFIX: wp_
-      WORDPRESS_ADMIN_NAME: root
-      WORDPRESS_ADMIN_PASS: root-pass
-      WORDPRESS_ADMIN_EMAIL: root@example.com
-      WORDPRESS_USER_NAME: test
-      WORDPRESS_USER_EMAIL: test@example.com
-      WORDPRESS_USER_PASS: test-pass
-  db:
+      WORDPRESS_URL: ${WORDPRESS_URL}
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+      WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX}
+      WORDPRESS_ADMIN_NAME: ${WORDPRESS_ADMIN_NAME}
+      WORDPRESS_ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD}
+      WORDPRESS_ADMIN_EMAIL: ${WORDPRESS_ADMIN_EMAIL}
+      WORDPRESS_USER_NAME: ${WORDPRESS_USER_NAME}
+      WORDPRESS_USER_EMAIL: ${WORDPRESS_USER_EMAIL}
+      WORDPRESS_USER_PASSWORD: ${WORDPRESS_USER_PASSWORD}
+
+  mariadb:
     build: ./requirements/mariadb
+    image: mariadb
+    container_name: mariadb
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db_d:/var/lib/mysql
     networks:
