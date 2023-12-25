@@ -58,11 +58,13 @@ services:
 
 volumes:
   wordpress_s:
+    driver: local
     driver_opts:
         type: none
         device: /home/${LOGIN}/data/wordpress
         o: bind
   db_d:
+    driver: local
     driver_opts:
         type: none
         device: /home/${LOGIN}/data/db

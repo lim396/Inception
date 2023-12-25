@@ -2,11 +2,14 @@ include ./srcs/.env
 
 NAME = inception
 
+.PHONY: $(NAME)
+$(NAME): all
+
 .PHONY: all
-all: up
+all: build up
 
 .PHONY: re
-re: down build up
+re: fclean build up
 
 .PHONY: up
 up:
@@ -17,7 +20,7 @@ down:
 	docker compose -f srcs/docker-compose.yml down
 
 .PHONY: build
-build:
+build: init
 	docker compose -f srcs/docker-compose.yml build
 
 .PHONY: rebuild
